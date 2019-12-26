@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     lazy var passwordTextField = UITextField()
     lazy var loginButton = UIButton()
     lazy var googleLoginButton = GIDSignInButton()
+    lazy var signUpButton = UIButton()
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -30,6 +31,7 @@ class ViewController: UIViewController {
         self.view.addSubview(passwordTextField)
         self.view.addSubview(loginButton)
         self.view.addSubview(googleLoginButton)
+        self.view.addSubview(signUpButton)
         
         // MARK: View - Constraints
         emailTextField.backgroundColor = UIColor.white
@@ -75,23 +77,73 @@ class ViewController: UIViewController {
             make.centerX.equalTo(view)
         }
         googleLoginButton.addTarget(self, action: #selector(touchUpGoogleLoginButton(_:)), for: .touchUpInside)
+        
+        signUpButton.backgroundColor = .clear
+        signUpButton.titleLabel?.font = loginButton.titleLabel?.font.withSize(15)
+        signUpButton.setTitle("Sign Up", for: .normal)
+        signUpButton.setTitleColor(.darkGray, for: .normal)
+        signUpButton.snp.makeConstraints{ (make) in
+            make.width.equalTo(115)
+            make.height.equalTo(48)
+            make.top.equalTo(googleLoginButton.snp.bottom).offset(10)
+            make.right.equalTo(googleLoginButton)
+        }
+        signUpButton.addTarget(self, action: #selector(signUp(_:)), for: .touchUpInside)
     }
 
     // MARK: Custom Method
     @objc
-    func touchUpLoginButton(_ sender: UIButton) {
+    func signUp(_ sender: UIButton) {
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
             if error != nil { return }
             
             let alert = UIAlertController(title: "알림", message: "회원가입완료", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
             self.present(alert, animated: true, completion:  nil)
+            self.successLogin()
         }
+    }
+    
+    @objc
+    func touchUpLoginButton(_ sender: UIButton) {
+        Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { [weak self] authResult, error in
+            guard let strongSelf = self else { return }
+            if authResult != nil {
+                self!.successLogin()
+            } else {
+                let alert = UIAlertController(title: "알림", message: "아이디나 비밀번호가 올바르지 않습니다.", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+                self!.present(alert, animated: true, completion:  nil)
+            }
+          // ...
+        }
+//        self.successLogin()
+//        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
+//            if error != nil { return }
+//
+//            let alert = UIAlertController(title: "알림", message: "회원가입완료", preferredStyle: UIAlertController.Style.alert)
+//            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+//            self.present(alert, animated: true, completion:  nil)
+//            self.successLogin()
+//        }
     }
     
     @objc
     func touchUpGoogleLoginButton(_ sender: GIDSignInButton) {
         GIDSignIn.sharedInstance().signIn()
+        self.successLogin()
+    }
+    
+    func successLogin() {
+//        let handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+//          // ...
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let pageView = storyboard.instantiateViewController(withIdentifier: "PageViewController")
+                        pageView.modalPresentationStyle = .fullScreen
+                //        pageView?.modalTransitionStyle = .coverVertical
+                //        let pageViewController = PageViewController()
+                        self.present(pageView, animated: true, completion: nil)
+//        }
     }
 }
 

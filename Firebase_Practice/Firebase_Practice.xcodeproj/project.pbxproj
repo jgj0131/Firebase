@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		159FF7A123AA5F66000B077F /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159FF7A023AA5F66000B077F /* PageViewController.swift */; };
 		15DA93B023A681F300DC4FF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DA93AF23A681F300DC4FF5 /* AppDelegate.swift */; };
 		15DA93B223A681F300DC4FF5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DA93B123A681F300DC4FF5 /* SceneDelegate.swift */; };
 		15DA93B423A681F300DC4FF5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DA93B323A681F300DC4FF5 /* ViewController.swift */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		0F1B3FFEDAB0BC0680DE1148 /* Pods-Firebase_Practice-Firebase_PracticeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Firebase_Practice-Firebase_PracticeUITests.release.xcconfig"; path = "Target Support Files/Pods-Firebase_Practice-Firebase_PracticeUITests/Pods-Firebase_Practice-Firebase_PracticeUITests.release.xcconfig"; sourceTree = "<group>"; };
+		159FF7A023AA5F66000B077F /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		15DA93AC23A681F300DC4FF5 /* Firebase_Practice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Firebase_Practice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15DA93AF23A681F300DC4FF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		15DA93B123A681F300DC4FF5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				15DA93AF23A681F300DC4FF5 /* AppDelegate.swift */,
 				15DA93B123A681F300DC4FF5 /* SceneDelegate.swift */,
 				15DA93B323A681F300DC4FF5 /* ViewController.swift */,
+				159FF7A023AA5F66000B077F /* PageViewController.swift */,
 				15DA93B523A681F300DC4FF5 /* Main.storyboard */,
 				15DA93B823A681F700DC4FF5 /* Assets.xcassets */,
 				15DA93BA23A681F700DC4FF5 /* LaunchScreen.storyboard */,
@@ -450,6 +453,7 @@
 				15DA93B423A681F300DC4FF5 /* ViewController.swift in Sources */,
 				15DA93B023A681F300DC4FF5 /* AppDelegate.swift in Sources */,
 				15DA93B223A681F300DC4FF5 /* SceneDelegate.swift in Sources */,
+				159FF7A123AA5F66000B077F /* PageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
