@@ -96,11 +96,20 @@ class ViewController: UIViewController {
     func signUp(_ sender: UIButton) {
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
             if error != nil { return }
-            
-            let alert = UIAlertController(title: "알림", message: "회원가입완료", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-            self.present(alert, animated: true, completion:  nil)
-            self.successLogin()
+//            if self.emailTextField.text?.validteEmail() == false {
+//                let alert = UIAlertController(title: "알림", message: "올바르지 않은 이메일 형식입니다.", preferredStyle: UIAlertController.Style.alert)
+//                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+//                self.present(alert, animated: true, completion:  nil)
+//            } else if self.passwordTextField.text?.validtePassword() == false {
+//                let alert = UIAlertController(title: "알림", message: "비밀번호는 8글자 이상 특수문자여야 합니다.", preferredStyle: UIAlertController.Style.alert)
+//                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+//                self.present(alert, animated: true, completion:  nil)
+//            } else {
+                let alert = UIAlertController(title: "알림", message: "회원가입완료", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+                self.present(alert, animated: true, completion:  nil)
+//                self.successLogin()
+//            }
         }
     }
     
@@ -147,3 +156,16 @@ class ViewController: UIViewController {
     }
 }
 
+extension String {
+    func validteEmail() -> Bool {
+        let emailRegEx = "^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$"
+        let predicate = NSPredicate(format: "SELF MATHES %@", emailRegEx)
+        return predicate.evaluate(with: self)
+    }
+    
+    func validtePassword() -> Bool {
+        let passwordRegEx = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8}$"
+        let predicate = NSPredicate(format: "SELF MATHES %@", passwordRegEx)
+        return predicate.evaluate(with: self)
+    }
+}
