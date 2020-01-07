@@ -48,7 +48,8 @@ class SignUpViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         self.view.addSubview(inputGender)
         self.view.addSubview(genderPickerView)
         
-        genderPickerView.isHidden = true
+//        genderPickerView.isHidden = true
+        genderPickerView.alpha = 0.0
         
         // MARK: View - Constraints
         topBar.backgroundColor = .systemBackground
@@ -137,9 +138,12 @@ class SignUpViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
             make.top.equalTo(inputPhoneNumber.snp.bottom).offset(20)
             make.centerX.equalTo(view)
         }
-        inputGender.addTarget(self, action: #selector(touchUpGenderTextfield(_:)), for: .touchUpInside)
+        inputGender.addTarget(self, action: #selector(beginEditGenderTextfield(_:)), for: .editingDidBegin)
+        inputGender.addTarget(self, action: #selector(endEditGenderTextfield(_:)), for: .editingDidEnd)
         
-        genderPickerView.layer.borderColor = UIColor.lightGray.cgColor
+        genderPickerView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
+        genderPickerView.layer.cornerRadius = 4
+        genderPickerView.layer.borderColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0).cgColor
         genderPickerView.layer.borderWidth = 0.7
         genderPickerView.snp.makeConstraints{ (make) in
             make.width.equalTo(270)
@@ -161,8 +165,19 @@ class SignUpViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     
     @objc
-    func touchUpGenderTextfield(_ sender: UITextField) {
-        genderPickerView.isHidden = false
+    func beginEditGenderTextfield(_ sender: UITextField) {
+//        genderPickerView.isHidden = false
+        UIView.animate(withDuration: 0.2, animations: {
+            self.genderPickerView.alpha = CGFloat(1.0)
+        })
+    }
+    
+    @objc
+    func endEditGenderTextfield(_ sender: UITextField) {
+//        genderPickerView.isHidden = true
+        UIView.animate(withDuration: 0.2, animations: {
+            self.genderPickerView.alpha = CGFloat(0.0)
+        })
     }
     
     // MARK: PickerView Setting
@@ -176,5 +191,9 @@ class SignUpViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        inputGender.text = pickerData[row]
     }
 }
