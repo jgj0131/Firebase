@@ -12,13 +12,17 @@ import Firebase
 
 class PageViewController: UIViewController {
     
+    // MARK: Property
     lazy var logOutButton = UIButton()
+    lazy var welcomeMessage = UILabel()
     
+    // MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemBackground
         self.view.addSubview(logOutButton)
+        self.view.addSubview(welcomeMessage)
         
         logOutButton.setTitle("Sign Out", for: .normal)
         logOutButton.setTitleColor(.black, for: .normal)
@@ -29,8 +33,17 @@ class PageViewController: UIViewController {
 //            make.height.equalTo(10)
         }
         logOutButton.addTarget(self, action: #selector(touchUpLogOutButton(_:)), for: .touchUpInside)
+        
+        let userName = Auth.auth().currentUser?.email
+        welcomeMessage.text = "\(userName!)"
+        welcomeMessage.textColor = .blue
+        welcomeMessage.snp.makeConstraints { (make) in
+            make.centerY.equalTo(logOutButton.snp.centerY)
+            make.right.equalTo(logOutButton.snp.left).offset(-10)
+        }
     }
     
+    // MARKL: Custom Method
     @objc
     func touchUpLogOutButton(_ sender: UIButton) {
         let firebaseAuth = Auth.auth()

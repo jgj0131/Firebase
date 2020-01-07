@@ -11,7 +11,7 @@ import SnapKit
 import Firebase
 import GoogleSignIn
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, GIDSignInDelegate {
 
     // MARK: Property
     lazy var emailTextField = UITextField()
@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         self.view.addSubview(signUpButton)
         
         // MARK: View - Constraints
+        emailTextField.autocapitalizationType = .none
         emailTextField.backgroundColor = UIColor.white
         emailTextField.placeholder = "Email"
         emailTextField.borderStyle = .roundedRect
@@ -44,6 +45,7 @@ class ViewController: UIViewController {
             make.centerX.equalTo(view)
         }
         
+        passwordTextField.autocapitalizationType = .none
         passwordTextField.backgroundColor = UIColor.white
         passwordTextField.placeholder = "Password"
         passwordTextField.borderStyle = .roundedRect
@@ -94,8 +96,10 @@ class ViewController: UIViewController {
     // MARK: Custom Method
     @objc
     func signUp(_ sender: UIButton) {
-        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
-            if error != nil { return }
+//        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
+//            if error != nil { return }
+        
+        
 //            if self.emailTextField.text?.validteEmail() == false {
 //                let alert = UIAlertController(title: "알림", message: "올바르지 않은 이메일 형식입니다.", preferredStyle: UIAlertController.Style.alert)
 //                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
@@ -105,12 +109,21 @@ class ViewController: UIViewController {
 //                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
 //                self.present(alert, animated: true, completion:  nil)
 //            } else {
-                let alert = UIAlertController(title: "알림", message: "회원가입완료", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-                self.present(alert, animated: true, completion:  nil)
-//                self.successLogin()
+        
+        
+//                let alert = UIAlertController(title: "알림", message: "회원가입완료", preferredStyle: UIAlertController.Style.alert)
+//                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+//                self.present(alert, animated: true, completion:  nil)
+
+        
 //            }
-        }
+        
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let pageView = storyboard.instantiateViewController(withIdentifier: "SignUpViewController")
+        pageView.modalPresentationStyle = .automatic
+        self.present(pageView, animated: true, completion: nil)
+//        }
     }
     
     @objc
@@ -143,19 +156,47 @@ class ViewController: UIViewController {
         self.successLogin()
     }
     
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        if let error = error {
+            return
+        }
+
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
+        
+        Auth.auth().signIn(with: credential) { (authResult, error) in
+            if let error = error {
+                return
+            }
+            if authResult != nil {
+                self.successLogin()
+            }
+        }
+    }
+    
     func successLogin() {
 //        let handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+//            var bool: Bool = auth.currentUser != nil
+//            print(bool)
 //          // ...
+//            if auth.currentUser != nil {
+        
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let pageView = storyboard.instantiateViewController(withIdentifier: "PageViewController")
-                        pageView.modalPresentationStyle = .fullScreen
+                let pageView = storyboard.instantiateViewController(withIdentifier: "PageViewController")
+                pageView.modalPresentationStyle = .fullScreen
                 //        pageView?.modalTransitionStyle = .coverVertical
                 //        let pageViewController = PageViewController()
-                        self.present(pageView, animated: true, completion: nil)
+                self.present(pageView, animated: true, completion: nil)
+                passwordTextField.text = ""
+            }
+                
 //        }
-    }
+//        Auth.auth().removeStateDidChangeListener(handle)
+//    }
 }
 
+// MARK: Extension
 extension String {
     func validteEmail() -> Bool {
         let emailRegEx = "^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$"
